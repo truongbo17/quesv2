@@ -1,0 +1,125 @@
+button,
+input[type="submit"],
+input[type="reset"] {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}
+.form__input > input {
+    width: 100%;
+    outline: none;
+    border-style: solid;
+    border-color: #f3f3f3;
+    border-radius: 10px;
+    padding: 0.5rem;
+    font-size: var(--fs-md);
+    font-family: var(--font-family);
+
+    transition: border-color 0.1s ease-in-out;
+}
+
+.form__input > select {
+    width: 100%;
+    outline: none;
+    border-style: solid;
+    border-color: #f3f3f3;
+    border-radius: 10px;
+    padding: 0.5rem;
+    font-size: var(--fs-md);
+    font-family: var(--font-family);
+
+    transition: border-color 0.1s ease-in-out;
+}
+
+.form__input > select:focus {
+    border-color: #42a1f2;
+}
+
+.head {
+    display: flex;
+    border-radius: 10px;
+    padding: 15px;
+    padding-bottom: 0;
+    background: white;
+    align-items: center;
+    justify-content: space-between;
+}
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+}
+.name_profile {
+    display: flex;
+    align-items: center;
+}
+.q {
+    margin-left: 10px;
+}
+
+.q p {
+    margin-top: 0;
+    color: grey;
+    font-size: 13px;
+}
+.svg {
+    height: 23px;
+    width: 23px;
+}
+.body {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.body p {
+    padding-top: 10px;
+    font-size: 14px;
+}
+
+.btm_icon {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.margin {
+    cursor: pointer;
+    margin-left: 15px;
+}
+
+.form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.ico {
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+}
+.in {
+    background: transparent;
+    border: none;
+    outline: none;
+    margin-left: 15px;
+}
+.flex {
+    width: 90%;
+    display: flex;
+    align-items: center;
+}
+
+.flex textarea {
+    width: 100%;
+}
+
+.form {
+    background: #d3d3d347;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}

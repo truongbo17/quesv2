@@ -1,0 +1,112 @@
+/* .heart {
+    background-image: url("https://img.icons8.com/material-outlined/24/000000/filled-like.png");
+    content: url("https://img.icons8.com/material-outlined/24/000000/filled-like.png");
+}
+
+.hearted {
+    content: url("https://img.icons8.com/fluency/48/000000/like.png");
+} */
+
+.post {
+    border-radius: 10px;
+    background: white;
+}
+
+.head {
+    display: flex;
+    border-radius: 10px;
+    padding: 15px;
+    padding-bottom: 0;
+    background: white;
+    align-items: center;
+    justify-content: space-between;
+}
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+}
+.name_profile {
+    display: flex;
+    align-items: center;
+}
+.q {
+    margin-left: 10px;
+}
+.q h4 {
+    margin-bottom: 8px;
+}
+.q p {
+    margin-top: 0;
+    color: grey;
+    font-size: 13px;
+}
+.svg {
+    height: 23px;
+    width: 23px;
+}
+.body {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.body p {
+    padding-top: 10px;
+    font-size: 14px;
+}
+.post_image {
+    margin: auto;
+    height: auto;
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+.btm_icon {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.left_icon {
+    margin-left: 10px;
+    margin-top: 15px;
+    display: flex;
+}
+.margin {
+    cursor: pointer;
+    margin-left: 15px;
+}
+.right_icon {
+    margin-top: 15px;
+}
+.form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.ico {
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+}
+.in {
+    background: transparent;
+    border: none;
+    outline: none;
+    margin-left: 15px;
+}
+.flex {
+    width: 90%;
+    display: flex;
+    align-items: center;
+}
+
+.flex input {
+    width: 100%;
+}
+
+.form {
+    background: #d3d3d347;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
