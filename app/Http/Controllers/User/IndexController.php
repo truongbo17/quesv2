@@ -7,6 +7,7 @@ use App\Http\Requests\AddQuestion;
 use Illuminate\Http\Request;
 use App\Models\Question;
 use App\Models\Category;
+use App\Models\LikeQuestion;
 use Illuminate\Support\Facades\Auth;
 
 class IndexController extends Controller
@@ -14,6 +15,8 @@ class IndexController extends Controller
     public function index(Request $request)
     {
         $listcategory = Category::where('status', 1)->get();
+        $historyLikes = LikeQuestion::with('questions')
+            ->where('user_id', Auth::user()->id)->select('question_id')->get();
 
         $listQuestions = Question::with('user')
             ->with('category')
@@ -22,6 +25,7 @@ class IndexController extends Controller
             ->orderBy('created_at', 'DESC')
             ->where('status', 1)
             ->paginate(5);
+
         $content = '';
 
         // return $listQuestions;
@@ -53,8 +57,20 @@ class IndexController extends Controller
                         <div class="btm_icon">
                             <div class="left_icon">';
 
-                $content .= '<img class="svg margin" id="question_' . $question->id . '" onclick="likeQuestion(' . $question->id . ')" src="https://img.icons8.com/material-outlined/24/000000/filled-like.png" />
-                                ' . $question->likes_count . '
+                $checkLike = false;
+                foreach ($historyLikes as $historyLike) {
+                    if ($historyLike->question_id == $question->id) {
+                        $checkLike = true;
+                    }
+                }
+
+                if ($checkLike) {
+                    $content .= '<img class="svg margin" id="question_' . $question->id . '" onclick="likeQuestion(' . $question->id . ')" src="https://img.icons8.com/plasticine/100/000000/like--v1.png" />';
+                } else {
+                    $content .= '<img class="svg margin" id="question_' . $question->id . '" onclick="likeQuestion(' . $question->id . ')" src="https://img.icons8.com/material-outlined/24/000000/filled-like.png" />';
+                }
+
+                $content .= '<span id="likeCount_' . $question->id . '">' . $question->likes_count . '</span>
                                 <img src="https://img.icons8.com/material-rounded/24/000000/comments--v1.png"
                                     class="svg margin" />
                                 ' . $question->comments_count . '

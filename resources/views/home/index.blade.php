@@ -432,7 +432,36 @@
         //-------------------------------------------------------------------------------------------
         // Xu ly Like Ques
         function likeQuestion(question_id) {
-            $('#question_' + question_id).attr('src', 'https://img.icons8.com/plasticine/100/000000/like--v1.png');
+            if ($('#question_' + question_id).attr('src') == 'https://img.icons8.com/plasticine/100/000000/like--v1.png') {
+                //unlike
+                $('#question_' + question_id).attr('src',
+                    'https://img.icons8.com/material-outlined/24/000000/filled-like.png');
+                callLike(question_id)
+            } else {
+                //like
+                $('#question_' + question_id).attr('src', 'https://img.icons8.com/plasticine/100/000000/like--v1.png');
+                callLike(question_id)
+            }
+        }
+
+        //call like
+        function callLike(question_id) {
+            var URLLIKE = "{{ route('user.like.send') }}";
+            $.ajax({
+                    url: URLLIKE,
+                    type: "POST",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "question_id": question_id
+                    },
+                    beforeSend: function() {
+                        loading.style.display = "block";
+                    }
+                })
+                .done(function(response) {
+                    $('#likeCount_' + response[0].id).html(response[0].likes_count);
+                    loading.style.display = "none";
+                })
         }
         // End Xu ly like ques
     </script>
