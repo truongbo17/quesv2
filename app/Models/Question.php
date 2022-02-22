@@ -25,4 +25,14 @@ class Question extends Model
     {
         return $this->belongsTo('App\Models\Category');
     }
+
+    public function likes()
+    {
+        return $this->hasMany('App\Models\LikeQuestion', 'question_id', 'id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Models\CommentQuestion', 'question_id', 'id');
+    }   
 }
