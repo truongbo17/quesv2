@@ -81,11 +81,24 @@
                             <h4 class="small font-weight-bold">Category</h4>
                             <div class="form-group">
                                 <select @error('category_id') style="border-color: rgb(207, 45, 45);" @enderror
-                                    name="category_id" class="form-control" multiple aria-label="multiple select example">
+                                    name="category_id" class="form-control">
                                     @foreach ($listCategory as $category)
                                         <option value="{{ $category->id }}"
                                             @if ($question[0]->category_id == $category->id) selected @endif>{{ $category->name }}
                                         </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <h4 class="small font-weight-bold">Tag</h4>
+                            <div class="form-group">
+                                <select @error('tag_id') style="border-color: rgb(207, 45, 45);" @enderror name="tag_id[]"
+                                    class="form-control" multiple aria-label="multiple select example">
+                                    @foreach ($listTag as $tag)
+                                        <option value="{{ $tag->id }}"
+                                            @foreach ($question[0]->tags as $tagQuestion) @if ($tagQuestion->id == $tag->id)
+                                        selected @endif
+                                            @endforeach
+                                            >{{ $tag->name }}</option>
                                     @endforeach
                                 </select>
                             </div>

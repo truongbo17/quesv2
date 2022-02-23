@@ -93,6 +93,16 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <h4 class="small font-weight-bold">Tag</h4>
+                            <div class="form-group">
+                                <select name="tag_id[]" class="form-control" multiple aria-label="multiple select example"
+                                    @error('tag_id') style="border-color: rgb(207, 45, 45);" @enderror>
+                                    @foreach ($listTag as $tag)
+                                        <option value="{{ $tag->id }}">
+                                            {{ $tag->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>

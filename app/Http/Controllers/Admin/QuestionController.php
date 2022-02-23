@@ -7,6 +7,7 @@ use App\Http\Requests\AdminAddQuestion;
 use App\Http\Requests\AdminEditQuestion;
 use App\Models\Category;
 use App\Models\Question;
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -36,8 +37,9 @@ class QuestionController extends Controller
     {
         $listCategory = Category::where('status', 1)->get();
         $listUser = User::where('status', 1)->get();
+        $listTag = Tag::where('status', 1)->get();
 
-        return view('admin.question.add', compact('listCategory', 'listUser'));
+        return view('admin.question.add', compact('listCategory', 'listUser', 'listTag'));
     }
 
     /**
@@ -53,7 +55,7 @@ class QuestionController extends Controller
                 $request->slug = \Str::slug($request->title);
             }
 
-            $pathImage = $request->file('imageQuestion')->store('public/files/imagesquestion');
+            $pathImage = $request->file('imageQuestion')->store('public/files/1/imagesquestion');
             $pathImage = str_replace('public/', '', $pathImage);
 
             $question = Question::create([
@@ -66,6 +68,11 @@ class QuestionController extends Controller
                 'slug' => $request->slug,
                 'content' => $request->content,
             ]);
+
+            foreach ($request->tag_id as $tagId) {
+                $tag = Tag::find($tagId);
+                $tag->questions()->attach($question->id);
+            }
 
             return redirect(url()->previous() . '#success')->with('success', 'Add new question success !');
         } catch (\Exception $e) {
@@ -83,6 +90,7 @@ class QuestionController extends Controller
     {
         $question = Question::with('user')
             ->with('category')
+            ->with('tags')
             ->where('id', $request->id)
             ->get();
 
@@ -99,13 +107,15 @@ class QuestionController extends Controller
     {
         $question = Question::with('user')
             ->with('category')
+            ->with('tags')
             ->orderBy('updated_at', 'DESC')
             ->where('id', $request->id)
             ->get();
 
         $listCategory = Category::where('status', 1)->get();
+        $listTag = Tag::where('status', 1)->get();
 
-        return view('admin.question.edit', compact('question', 'listCategory'));
+        return view('admin.question.edit', compact('question', 'listCategory', 'listTag'));
     }
 
     /**
@@ -129,28 +139,21 @@ class QuestionController extends Controller
             }
 
             if ($request->has('imageQuestion')) {
-                $pathImage = $request->file('imageQuestion')->store('public/files/imagesquestion');
+                $pathImage = $request->file('imageQuestion')->store('public/files/1/imagesquestion');
                 $pathImage = str_replace('public/', '', $pathImage);
 
-                Question::whereId($request->id)
-                    ->update([
-                        'title' => $request->title,
-                        'category_id' => $request->category_id,
-                        'status' => $request->status,
-                        'image' => $pathImage,
-                        'slug' => $request->slug,
-                        'content' => $request->content,
-                    ]);
-            } else {
-                Question::whereId($request->id)
-                    ->update([
-                        'title' => $request->title,
-                        'category_id' => $request->category_id,
-                        'status' => $request->status,
-                        'slug' => $request->slug,
-                        'content' => $request->content,
-                    ]);
+                $question->image = $pathImage;
             }
+            Question::whereId($request->id)
+                ->update([
+                    'title' => $request->title,
+                    'category_id' => $request->category_id,
+                    'status' => $request->status,
+                    'slug' => $request->slug,
+                    'content' => $request->content,
+                ]);
+
+            $question->tags()->sync($request->tag_id);
 
             return redirect(url()->previous() . '#success')->with('success', 'Edit question success !');
         } catch (\Illuminate\Database\QueryException $e) {

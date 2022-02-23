@@ -70,8 +70,8 @@
         <div id="collapseTag" class="collapse" aria-labelledby="headingTag" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Choose Option :</h6>
-                <a class="collapse-item" href="{{ route('admin.category.list') }}">List Tag</a>
-                <a class="collapse-item" href="{{ route('admin.category.add') }}">Add Tag</a>
+                <a class="collapse-item" href="{{ route('admin.tag.list') }}">List Tag</a>
+                <a class="collapse-item" href="{{ route('admin.tag.add') }}">Add Tag</a>
             </div>
         </div>
     </li>

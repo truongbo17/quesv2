@@ -42,6 +42,14 @@
                     @endforeach
                 </select>
             </div>
+            <h4>Tag</h4>
+            <div class="btm_icon form__input">
+                <select @error('tag_id') style="border-color: rgb(207, 45, 45);" @enderror multiple name="tag_id[]">
+                    @foreach ($listtag as $tag)
+                        <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                    @endforeach
+                </select>
+            </div>
             <div class="form">
                 <div class="flex">
                     <textarea name="title" class="in" rows="5" placeholder="Enter your question..."

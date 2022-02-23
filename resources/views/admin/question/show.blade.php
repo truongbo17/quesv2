@@ -47,6 +47,12 @@
                         <p>{{ $question[0]->user->name }} </p>
                         <h4 class="small font-weight-bold">Category</h4>
                         <p>{{ $question[0]->category->name }} </p>
+                        <h4 class="small font-weight-bold">Tags</h4>
+                        <p>
+                            @foreach ($question[0]->tags as $tag)
+                                #{{ $tag->name }},
+                            @endforeach
+                        </p>
                     </div>
                 </div>
             </div>

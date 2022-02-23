@@ -7,6 +7,7 @@ use App\Http\Requests\AddQuestion;
 use Illuminate\Http\Request;
 use App\Models\Question;
 use App\Models\Category;
+use App\Models\Tag;
 use App\Models\LikeQuestion;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,11 +16,14 @@ class IndexController extends Controller
     public function index(Request $request)
     {
         $listcategory = Category::where('status', 1)->get();
+        $listtag = Tag::where('status', 1)->get();
+
         $historyLikes = LikeQuestion::with('questions')
             ->where('user_id', Auth::user()->id)->select('question_id')->get();
 
         $listQuestions = Question::with('user')
             ->with('category')
+            ->with('tags')
             ->withCount('likes')
             ->withCount('comments')
             ->orderBy('created_at', 'DESC')
@@ -32,6 +36,11 @@ class IndexController extends Controller
 
         if ($request->ajax()) {
             foreach ($listQuestions as $question) {
+                $tags = '';
+                foreach ($question->tags as $tagName) {
+                    $tags .= ' #' . $tagName->name;
+                }
+
                 $content .= '<div class="files-table">
                 <div>
                 <div class="post">
@@ -50,8 +59,8 @@ class IndexController extends Controller
                     </div>
                     <div class="body">
                         <span>' . $question->title . '</span>
-                        <p>
-                            ' . $question->content . '
+                        <p style="color:blue">
+                            ' . $tags . '
                         </p>
                         <img style="width:100%" class="post_image" src="storage/' . $question->image . '" />
                         <div class="btm_icon">
@@ -97,26 +106,33 @@ class IndexController extends Controller
             return $content;
         }
 
-        return view('home.index', compact('listcategory'));
+        return view('home.index', compact('listcategory', 'listtag'));
     }
 
     public function store(AddQuestion $request)
     {
         try {
-            $name = $request->file('imageQuestion')->getClientOriginalName();
+            $pathImage = $request->file('imageQuestion')->store('public/files/1/imagesquestion');
+            $pathImage = str_replace('public/', '', $pathImage);
 
-            $request->file('imageQuestion')->move(public_path('assets/img'), $name);
-
-            $name = '/assets/img/' . $name;
+            $slug = \Str::slug($request->title);
 
             $question = Question::create([
                 'user_id' => Auth::user()->id,
                 'category_id' => $request->category_id,
                 'title' => $request->title,
+                'content' => $request->title,
                 'view' => 1,
                 'status' => 0,
-                'image' => $name,
+                'image' => $pathImage,
+                'slug' => $slug,
             ]);
+
+
+            foreach ($request->tag_id as $tagId) {
+                $tag = Tag::find($tagId);
+                $tag->questions()->attach($question->id);
+            }
 
             return redirect(url()->previous() . '#success')->with('success', 'Add new question success , Please wait for approval !');
         } catch (\Exception $e) {

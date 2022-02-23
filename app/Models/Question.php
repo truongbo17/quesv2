@@ -34,5 +34,10 @@ class Question extends Model
     public function comments()
     {
         return $this->hasMany('App\Models\CommentQuestion', 'question_id', 'id');
-    }   
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany('App\Models\Tag', 'tag_question', 'tag_id', 'question_id');
+    }
 }
