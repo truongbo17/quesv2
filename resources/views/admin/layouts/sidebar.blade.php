@@ -83,6 +83,22 @@
         User
     </div>
 
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser" aria-expanded="true"
+            aria-controls="collapseUser">
+            <i class="fas fa-fw fa-user"></i>
+            <span>User</span>
+        </a>
+        <div id="collapseUser" class="collapse" aria-labelledby="headingTag" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Choose Option :</h6>
+                <a class="collapse-item" href="{{ route('admin.tag.list') }}">User</a>
+                <a class="collapse-item" href="{{ route('admin.tag.add') }}">Role</a>
+                <a class="collapse-item" href="{{ route('admin.tag.add') }}">Permission</a>
+            </div>
+        </div>
+    </li>
+
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
     <!-- Heading -->

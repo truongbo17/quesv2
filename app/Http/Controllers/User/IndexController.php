@@ -41,7 +41,8 @@ class IndexController extends Controller
                     $tags .= ' #' . $tagName->name;
                 }
 
-                $content .= '<div class="files-table">
+                $content .= '<div id="question' . $question->id . '" class="files-table">
+
                 <div>
                 <div class="post">
                     <div class="head">
@@ -80,7 +81,7 @@ class IndexController extends Controller
                 }
 
                 $content .= '<span id="likeCount_' . $question->id . '">' . $question->likes_count . '</span>
-                                <img src="https://img.icons8.com/material-rounded/24/000000/comments--v1.png"
+                                <img id="questionCmt_' . $question->id . '" onclick="commentQuestion(' . $question->id . ')" src="https://img.icons8.com/material-rounded/24/000000/comments--v1.png"
                                     class="svg margin" />
                                 ' . $question->comments_count . '
                                 <img src="https://img.icons8.com/ios-glyphs/30/000000/share--v1.png" class="svg margin" />
@@ -89,18 +90,22 @@ class IndexController extends Controller
                                 ' . $question->category->name . '
                             </div>
                         </div>
-                        <form class="form">
+                        <form class="form" action="' . route("user.comment.send") . '" method="POST">
+                        ' . csrf_field() . '
                             <div class="flex">
                                 <img src="' . Auth::user()->avatar . '" class="ico" />
-                                <input type="text" placeholder="Enter Text..." class="in" />
+                                <input type="text" name="comment" style="width:100%" placeholder="Enter Text..." class="in" />
+                                <input name="question_id" value="' . $question->id . '" hidden />
                             </div>
-                            <img src="https://img.icons8.com/fluency/48/000000/filled-sent.png" class="svg margin" />
+                            <button><img src="https://img.icons8.com/fluency/48/000000/filled-sent.png" class="svg margin" /></button>
                         </form>
                     </div>
                 </div>
             </div>
             </div>
-            <br/>';
+            </div>
+            <br/>
+            ';
             }
 
             return $content;

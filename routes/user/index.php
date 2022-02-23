@@ -13,5 +13,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [\App\Http\Controllers\User\IndexController::class, 'index'])->middleware('auth')->name('user.index');
+Route::get('index.html', [\App\Http\Controllers\User\IndexController::class, 'index'])->middleware('auth')->name('user.index');
 Route::post('addquestion', [\App\Http\Controllers\User\IndexController::class, 'store'])->middleware('auth')->name('user.store');

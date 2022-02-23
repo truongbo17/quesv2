@@ -7,7 +7,7 @@
     <title>BlogBo - 2022</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('assets/css/modal.css') }}">
 </head>
 
 <body>
@@ -267,8 +267,21 @@
                     </path>
                 </svg>
             </div>
-
         </div>
+
+        {{-- Modal --}}
+        <div id="my-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button style="font-size: 40px;float:right" onclick="closeModal()">&times;</button>
+                    <h2>Comment</h2>
+                </div>
+                <div class="modal-body" id="modalComment">
+
+                </div>
+            </div>
+        </div>
+
         <div class="right-area">
             <button class="btn-close-right">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
@@ -464,6 +477,35 @@
                 })
         }
         // End Xu ly like ques
+
+        //Modal Comment
+        const modal = document.querySelector('#my-modal');
+        var URLCOMMENT = "{{ route('user.comment.history') }}";
+
+        function commentQuestion(question_id) {
+            //call all commet off ques
+            $.ajax({
+                    url: URLCOMMENT,
+                    type: "POST",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "question_id": question_id
+                    },
+                    beforeSend: function() {
+                        modal.style.display = "none";
+                    }
+                })
+                .done(function(response) {
+                    modal.style.display = "block";
+                    $("#modalComment").append(response);
+                })
+        }
+
+        // Close
+        function closeModal() {
+            modal.style.display = 'none';
+            $("#modalComment").html(``);
+        }
     </script>
 </body>
 
