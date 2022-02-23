@@ -23,6 +23,10 @@
                     </div>
                     <!-- Card Body -->
                     <div class="card-body">
+                        <h4 class="small font-weight-bold">Cotent</h4>
+                        <p>{{ $question[0]->content }} </p>
+                        <h4 class="small font-weight-bold">Slug</h4>
+                        <p>{{ $question[0]->slug }} </p>
                         <h4 class="small font-weight-bold">View</h4>
                         <p>{{ $question[0]->view }} </p>
                         <h4 class="small font-weight-bold">Status</h4>
@@ -58,7 +62,7 @@
                     <!-- Card Body -->
                     <div class="card-body">
                         <div class="chart-pie pt-4 pb-2">
-                            <img src="{{ $question[0]->image }}" style="width:100%;height:auto;">
+                            <img src="{{ asset('storage/' . $question[0]->image) }}" style="width:100%;height:auto;">
                         </div>
                     </div>
                 </div>

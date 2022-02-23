@@ -59,7 +59,51 @@
             </div>
         </div>
     </li>
+
+    <!-- Nav Item - Tag Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTag" aria-expanded="true"
+            aria-controls="collapseTag">
+            <i class="fas fa-fw fa-tag"></i>
+            <span>Tag</span>
+        </a>
+        <div id="collapseTag" class="collapse" aria-labelledby="headingTag" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Choose Option :</h6>
+                <a class="collapse-item" href="{{ route('admin.category.list') }}">List Tag</a>
+                <a class="collapse-item" href="{{ route('admin.category.add') }}">Add Tag</a>
+            </div>
+        </div>
+    </li>
+
     <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        User
+    </div>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        System
+    </div>
+
+    <!-- Nav Item - Charts -->
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('admin.file.index') }}">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Files</span></a>
+    </li>
+
+    <!-- Nav Item - Charts -->
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('admin.log.index') }}">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Logs</span></a>
+    </li>
+
     <hr class="sidebar-divider d-none d-md-block">
 
     <!-- Sidebar Toggler (Sidebar) -->

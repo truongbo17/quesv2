@@ -53,7 +53,7 @@ class IndexController extends Controller
                         <p>
                             ' . $question->content . '
                         </p>
-                        <img style="width:100%" class="post_image" src="' . $question->image . '" />
+                        <img style="width:100%" class="post_image" src="storage/' . $question->image . '" />
                         <div class="btm_icon">
                             <div class="left_icon">';
 

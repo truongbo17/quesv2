@@ -57,6 +57,19 @@
                                     @error('title') style="border-color: rgb(207, 45, 45);" @enderror
                                     value="{{ old('title') }}" autocomplete="title" autofocus>
                             </div>
+                            <h4 class="small font-weight-bold">Content</h4>
+                            <div class="form-group">
+                                <input class="form-control form-control-user" name="content"
+                                    @error('content') style="border-color: rgb(207, 45, 45);" @enderror
+                                    value="{{ old('content') }}" autocomplete="content" autofocus>
+                            </div>
+                            <h4 class="small font-weight-bold">Slug</h4>
+                            <div class="form-group">
+                                <p>bo trong se tu tao slug</p>
+                                <input class="form-control form-control-user" name="slug"
+                                    @error('slug') style="border-color: rgb(207, 45, 45);" @enderror
+                                    value="{{ old('slug') }}" autocomplete="slug" autofocus>
+                            </div>
                             <h4 class="small font-weight-bold">Status</h4>
                             <select class="form-control" name="status"
                                 @error('status') style="border-color: rgb(207, 45, 45);" @enderror autofocus>

@@ -22,6 +22,7 @@ class AddQuestion extends FormRequest
             'title' => ['required', 'min:10'],
             'category_id' => ['required'],
             'imageQuestion' => ['required'],
+            'content' => ['required'],
         ];
     }
 
@@ -32,6 +33,7 @@ class AddQuestion extends FormRequest
             'title.min' => 'The title must be at least 10 characters !',
             'category_id.required' => 'Please fill to category',
             'imageQuestion.required' => 'Please fill to image',
+            'content.required' => 'Please fill to content',
         ];
     }
 }

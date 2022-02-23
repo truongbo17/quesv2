@@ -58,6 +58,17 @@
                                     value="{{ $question[0]->title }}"
                                     @error('title') style="border-color: rgb(207, 45, 45);" @enderror>
                             </div>
+                            <h4 class="small font-weight-bold">Content</h4>
+                            <div class="form-group">
+                                <input class="form-control form-control-user" name="content"
+                                    value="{{ $question[0]->content }}"
+                                    @error('content') style="border-color: rgb(207, 45, 45);" @enderror>
+                            </div>
+                            <h4 class="small font-weight-bold">Slug</h4>
+                            <div class="form-group">
+                                <input class="form-control form-control-user" name="slug" value="{{ $question[0]->slug }}"
+                                    @error('slug') style="border-color: rgb(207, 45, 45);" @enderror>
+                            </div>
                             <h4 class="small font-weight-bold">Status</h4>
                             <select class="form-control" name="status"
                                 @error('status') style="border-color: rgb(207, 45, 45);" @enderror>
@@ -70,8 +81,7 @@
                             <h4 class="small font-weight-bold">Category</h4>
                             <div class="form-group">
                                 <select @error('category_id') style="border-color: rgb(207, 45, 45);" @enderror
-                                    name="category_id" class="form-control" multiple
-                                    aria-label="multiple select example">
+                                    name="category_id" class="form-control" multiple aria-label="multiple select example">
                                     @foreach ($listCategory as $category)
                                         <option value="{{ $category->id }}"
                                             @if ($question[0]->category_id == $category->id) selected @endif>{{ $category->name }}
@@ -107,7 +117,8 @@
                         <!-- Card Body -->
                         <div class="card-body">
                             <div class="chart-pie pt-4 pb-2">
-                                <img id="output" src="{{ $question[0]->image }}" style="width:100%;height:auto;">
+                                <img id="output" src="{{ asset('storage/' . $question[0]->image) }}"
+                                    style="width:100%;height:auto;">
                             </div>
                         </div>
                     </div>

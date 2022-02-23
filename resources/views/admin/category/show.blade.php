@@ -25,6 +25,10 @@
                     <div class="card-body">
                         <h4 class="small font-weight-bold">Name</h4>
                         <p>{{ $category[0]->name }}</p>
+                        <h4 class="small font-weight-bold">Slug</h4>
+                        <p>{{ $category[0]->slug }}</p>
+                        <h4 class="small font-weight-bold">Parent</h4>
+                        <p>{{ $category[0]->parent_id }}</p>
                         <h4 class="small font-weight-bold">Status</h4>
                         <p>
                             @if ($category[0]->status == 1)

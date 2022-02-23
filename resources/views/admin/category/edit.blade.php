@@ -57,6 +57,11 @@
                                 <input class="form-control form-control-user" name="name" value="{{ $category[0]->name }}"
                                     @error('name') style="border-color: rgb(207, 45, 45);" @enderror>
                             </div>
+                            <h4 class="small font-weight-bold">Slug</h4>
+                            <div class="form-group">
+                                <input class="form-control form-control-user" name="slug" value="{{ $category[0]->slug }}"
+                                    @error('slug') style="border-color: rgb(207, 45, 45);" @enderror>
+                            </div>
                             <h4 class="small font-weight-bold">Status</h4>
                             @if ($category[0]->questions_count > 0)
                                 Can't change the deleted status when there is a question in this category

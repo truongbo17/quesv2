@@ -50,6 +50,7 @@
                                 <th>Name</th>
                                 <th>User</th>
                                 <th>Date</th>
+                                <th>Parent</th>
                                 <th>Total Question</th>
                                 <th style="width: 5px">Status</th>
                                 <th>Action</th>
@@ -60,6 +61,7 @@
                                 <th>Name</th>
                                 <th>User</th>
                                 <th>Date</th>
+                                <th>Parent</th>
                                 <th>Total Question</th>
                                 <th style="width: 5px">Status</th>
                                 <th>Action</th>
@@ -71,6 +73,7 @@
                                     <td>{{ $listCategory->name }}</td>
                                     <td>{{ $listCategory->user->name }}</td>
                                     <td>{{ \Carbon\Carbon::parse($listCategory->created_at)->format('H:i d/m/Y') }}</td>
+                                    <td>{{ $listCategory->parent_id }}</td>
                                     <td>{{ $listCategory->questions_count }}</td>
                                     <td>
                                         @if ($listCategory->status == 1)

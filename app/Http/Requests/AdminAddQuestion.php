@@ -29,6 +29,7 @@ class AdminAddQuestion extends FormRequest
             'user_id' => ['required'],
             'category_id' => ['required'],
             'imageQuestion' => ['required'],
+            'content' => ['required'],
         ];
     }
 
@@ -42,6 +43,7 @@ class AdminAddQuestion extends FormRequest
             'user_id.required' => 'Please fill to auth',
             'category_id.required' => 'Please fill to category',
             'imageQuestion.required' => 'Please fill to image',
+            'content.required' => 'Please fill to content',
         ];
     }
 }

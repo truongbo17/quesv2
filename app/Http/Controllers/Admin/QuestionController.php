@@ -49,11 +49,12 @@ class QuestionController extends Controller
     public function store(AdminAddQuestion $request)
     {
         try {
-            $name = $request->file('imageQuestion')->getClientOriginalName();
+            if (!$request->slug) {
+                $request->slug = \Str::slug($request->title);
+            }
 
-            $request->file('imageQuestion')->move(public_path('assets/img'), $name);
-
-            $name = '/assets/img/' . $name;
+            $pathImage = $request->file('imageQuestion')->store('public/files/imagesquestion');
+            $pathImage = str_replace('public/', '', $pathImage);
 
             $question = Question::create([
                 'user_id' => $request->user_id,
@@ -61,7 +62,9 @@ class QuestionController extends Controller
                 'title' => $request->title,
                 'view' => 1,
                 'status' => $request->status,
-                'image' => $name
+                'image' => $pathImage,
+                'slug' => $request->slug,
+                'content' => $request->content,
             ]);
 
             return redirect(url()->previous() . '#success')->with('success', 'Add new question success !');
@@ -121,19 +124,22 @@ class QuestionController extends Controller
                 return false;
             }
 
+            if (!$request->slug) {
+                $request->slug = \Str::slug($request->title);
+            }
+
             if ($request->has('imageQuestion')) {
-                $name = $request->file('imageQuestion')->getClientOriginalName();
-
-                $request->file('imageQuestion')->move(public_path('assets/img'), $name);
-
-                $name = '/assets/img/' . $name;
+                $pathImage = $request->file('imageQuestion')->store('public/files/imagesquestion');
+                $pathImage = str_replace('public/', '', $pathImage);
 
                 Question::whereId($request->id)
                     ->update([
                         'title' => $request->title,
                         'category_id' => $request->category_id,
                         'status' => $request->status,
-                        'image' => $name,
+                        'image' => $pathImage,
+                        'slug' => $request->slug,
+                        'content' => $request->content,
                     ]);
             } else {
                 Question::whereId($request->id)
@@ -141,6 +147,8 @@ class QuestionController extends Controller
                         'title' => $request->title,
                         'category_id' => $request->category_id,
                         'status' => $request->status,
+                        'slug' => $request->slug,
+                        'content' => $request->content,
                     ]);
             }
 

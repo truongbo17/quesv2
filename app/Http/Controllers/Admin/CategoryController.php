@@ -44,11 +44,17 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        // return $request;
         try {
+            if (!$request->slug) {
+                $request->slug = \Str::slug($request->name);
+            }
+
             $question = Category::create([
                 'user_id' => $request->user_id,
                 'name' => $request->name,
                 'status' => $request->status,
+                'slug' => $request->slug,
             ]);
 
             return redirect(url()->previous() . '#success')->with('success', 'Add new category success !');
@@ -104,11 +110,16 @@ class CategoryController extends Controller
             return false;
         }
 
+        if (!$request->slug) {
+            $request->slug = \Str::slug($request->name);
+        }
+
         try {
             Category::whereId($request->id)
                 ->update([
                     'name' => $request->name,
                     'status' => $request->status,
+                    'slug' => $request->slug,
                 ]);
             return redirect(url()->previous() . '#success')->with('success', 'Edit Category success !');
         } catch (\Exception $e) {

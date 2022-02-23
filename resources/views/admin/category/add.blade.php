@@ -57,6 +57,12 @@
                                     @error('name') style="border-color: rgb(207, 45, 45);" @enderror
                                     value="{{ old('name') }}" autocomplete="name" autofocus>
                             </div>
+                            <h4 class="small font-weight-bold"> Slug</h4>
+                            <div class="form-group">
+                                <input class="form-control form-control-user" name="slug"
+                                    @error('slug') style="border-color: rgb(207, 45, 45);" @enderror
+                                    value="{{ old('slug') }}" autocomplete="slug" autofocus>
+                            </div>
                             <h4 class="small font-weight-bold">Status</h4>
                             <select class="form-control" name="status"
                                 @error('status') style="border-color: rgb(207, 45, 45);" @enderror autofocus>
