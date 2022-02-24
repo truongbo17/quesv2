@@ -92,7 +92,7 @@
         <div id="collapseUser" class="collapse" aria-labelledby="headingTag" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Choose Option :</h6>
-                <a class="collapse-item" href="{{ route('admin.tag.list') }}">User</a>
+                <a class="collapse-item" href="{{ route('admin.user.list') }}">User</a>
                 <a class="collapse-item" href="{{ route('admin.tag.add') }}">Role</a>
                 <a class="collapse-item" href="{{ route('admin.tag.add') }}">Permission</a>
             </div>

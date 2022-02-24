@@ -69,9 +69,11 @@ class QuestionController extends Controller
                 'content' => $request->content,
             ]);
 
-            foreach ($request->tag_id as $tagId) {
-                $tag = Tag::find($tagId);
-                $tag->questions()->attach($question->id);
+            if ($request->tag_id) {
+                foreach ($request->tag_id as $tagId) {
+                    $tag = Tag::find($tagId);
+                    $tag->questions()->attach($question->id);
+                }
             }
 
             return redirect(url()->previous() . '#success')->with('success', 'Add new question success !');

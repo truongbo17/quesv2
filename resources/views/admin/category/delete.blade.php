@@ -18,6 +18,9 @@
 
 <script>
     function deleteCategory(category_id, title) {
+        $('.modal-body').text('');
+        $('.modal-footer').html('');
+
         $('.modal-body').text('Select "Confirm" below if you are ready to delete category - ' + title);
         $('.modal-footer').append(
             `<a href="" class="btn btn-primary" onclick="submitDelete(${category_id})">Confirm</a>`);
