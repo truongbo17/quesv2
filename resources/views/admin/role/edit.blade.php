@@ -66,9 +66,8 @@
 
                             @foreach ($permissionsParent as $permissionParent)
                                 <div class="card-body">
-                                    <label><input type="checkbox" value="{{ $permissionParent->id }}"
-                                            id="checkboxALl">Module
-                                        {{ $permissionParent->name }}</label>
+                                    <h5>Module
+                                        {{ $permissionParent->name }}</h5>
                                     <div class="form-group">
                                         <div class="row">
                                             @foreach ($permissionParent->permissionsChild as $permissionsChild)

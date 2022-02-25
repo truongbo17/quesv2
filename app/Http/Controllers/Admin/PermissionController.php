@@ -82,7 +82,15 @@ class PermissionController extends Controller
      */
     public function update(Request $request, Permission $permission)
     {
-        //
+        Permission::whereId($request->id)
+            ->update([
+                'name' => $request->name,
+                'display_name' => $request->display_name,
+                'parent_id' => $request->parent_id,
+                'key_code' => $request->key_code,
+            ]);
+
+        return redirect(url()->previous() . '#success')->with('success', 'Edit permission success !');
     }
 
     /**
