@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Yajra\Datatables\Datatables;
 
 class CategoryController extends Controller
 {
@@ -14,14 +15,48 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $listCategories = Category::with('user')
             ->withCount('questions')
             ->orderBy('created_at', 'DESC')
             ->get();
 
-        return view('admin.category.index', compact('listCategories'));
+        if ($request->ajax()) {
+            return Datatables::of($listCategories)
+                ->addIndexColumn()
+                ->addColumn('user', function ($category) {
+                    return $category->user->name;
+                })
+                ->addColumn('status', function ($category) {
+                    $status = '';
+                    if ($category->status == 1)
+                        $status = '<span class="badge bg-success text-white">Active</span>';
+                    elseif ($category->status == 0)
+                        $status = '<span class="badge bg-warning text-white">Pending</span>';
+                    else
+                        $status = '<span class="badge bg-danger text-white">Deleted</span>';
+
+                    return $status;
+                })
+                ->editColumn('action', function ($category) {
+                    $action = '<a href="' . route('admin.category.show', $category->id) . '"
+                                                class="btn btn-sm btn-success btn-circle"><i class="fas fa-eye"></i></a>
+                                            <a href="' . route('admin.category.edit', $category->id) . '"
+                                                class="btn btn-sm btn-warning btn-circle"><i class="fas fa-edit"></i></a>';
+                    if ($category->status != 2) {
+                        $action .= "<a onclick='deleteCategory($category->id)'
+                            href='#' data-toggle='modal' data-target='#deleteCategory'
+                            class='btn btn-sm btn-danger btn-circle'><i class='fas fa-trash'></i></a>";
+                    }
+
+                    return $action;
+                })
+                ->rawColumns(['action', 'status'])
+                ->make(true);
+        }
+
+        return view('admin.category.index');
     }
 
     /**

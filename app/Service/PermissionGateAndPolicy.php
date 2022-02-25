@@ -27,7 +27,7 @@ class PermissionGateAndPolicy
 
     public function Log()
     {
-        Gate::define('log_index', 'App\Policies\Log@index');
+        Gate::define('log_index', 'App\Policies\LogPolicy@index');
     }
 
     public function User()

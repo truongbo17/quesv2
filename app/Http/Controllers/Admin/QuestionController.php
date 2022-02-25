@@ -10,22 +10,61 @@ use App\Models\Question;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Storage;
+use Yajra\Datatables\Datatables;
 class QuestionController extends Controller
 {
+    private $disk = 'public';
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $listQuestions = Question::with('user')
             ->with('category')
             ->orderBy('created_at', 'DESC')
             ->get();
 
-        return view('admin.question.index', compact('listQuestions'));
+        if ($request->ajax()) {
+            return Datatables::of($listQuestions)
+                ->addIndexColumn()
+                ->addColumn('category', function ($question) {
+                    return $question->category->name;
+                })
+                ->addColumn('name', function ($question) {
+                    return $question->user->name;
+                })
+                ->addColumn('status', function ($question) {
+                    $status = '';
+                    if ($question->status == 1)
+                        $status = '<span class="badge bg-success text-white">Active</span>';
+                    elseif ($question->status == 0)
+                        $status = '<span class="badge bg-warning text-white">Pending</span>';
+                    else
+                        $status = '<span class="badge bg-danger text-white">Deleted</span>';
+
+                    return $status;
+                })
+                ->editColumn('action', function ($question) {
+                    $action = '<a href="' . route('admin.question.show', $question->id) . '"
+                                            class="btn btn-sm btn-success btn-circle"><i class="fas fa-eye"></i></a>
+                                        <a href="' . route('admin.question.edit', $question->id) . '"
+                                            class="btn btn-sm btn-warning btn-circle"><i class="fas fa-edit"></i></a>';
+                    if ($question->status != 2) {
+                        $action .= "<a onclick='deleteQuestion($question->id)'
+                        href='#' data-toggle='modal' data-target='#deleteQuestion'
+                        class='btn btn-sm btn-danger btn-circle'><i class='fas fa-trash'></i></a>";
+                    }
+
+                    return $action;
+                })
+                ->rawColumns(['action', 'status'])
+                ->make(true);
+        }
+
+        return view('admin.question.index');
     }
 
     /**
@@ -141,8 +180,18 @@ class QuestionController extends Controller
             }
 
             if ($request->has('imageQuestion')) {
-                $pathImage = $request->file('imageQuestion')->store('public/files/1/imagesquestion');
-                $pathImage = str_replace('public/', '', $pathImage);
+
+                $fileName = date('mdYHis') . uniqid() . "." . $request->file('imageQuestion')->getClientOriginalExtension();
+                $pathImage = $request->file('imageQuestion')->storeAs('files/1/imagesquestion', $fileName, ['disk' => $this->disk]);
+
+                /*
+                preview store in datababse
+                {
+                    "disk" : "public",
+                    "path" : "files/1/imagesquestion/022520221646176218a569bf0bf.jpg"
+                }
+                */
+                dd($pathImage);
 
                 $question->image = $pathImage;
             }

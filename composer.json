@@ -14,7 +14,8 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
         "rap2hpoutre/laravel-log-viewer": "^2.1",
-        "unisharp/laravel-filemanager": "^2.4"
+        "unisharp/laravel-filemanager": "^2.4",
+        "yajra/laravel-datatables-oracle": "^9.19"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",

@@ -36,7 +36,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="question-table" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>Title</th>
@@ -48,50 +48,6 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tfoot>
-                            <tr>
-                                <th>Title</th>
-                                <th>Category</th>
-                                <th>Name</th>
-                                <th>View</th>
-                                <th>Date</th>
-                                <th style="width: 5px;">Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                            @foreach ($listQuestions as $listQuestion)
-                                <tr>
-                                    <td>{{ $listQuestion->title }}</td>
-                                    <td>
-                                        {{ $listQuestion->category->name }}
-                                    </td>
-                                    <td>{{ $listQuestion->user->name }}</td>
-                                    <td>{{ $listQuestion->view }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($listQuestion->created_at)->format('H:i d/m/Y') }}</td>
-                                    <td>
-                                        @if ($listQuestion->status == 1)
-                                            <span class="badge bg-success text-white">Active</span>
-                                        @elseif ($listQuestion->status == 0)
-                                            <span class="badge bg-warning text-white">Pending</span>
-                                        @else
-                                            <span class="badge bg-danger text-white">Deleted</span>
-                                        @endif
-                                    </td>
-                                    <td style="width: 100px">
-                                        <a href="{{ route('admin.question.show', $listQuestion->id) }}"
-                                            class="btn btn-sm btn-success btn-circle"><i class="fas fa-eye"></i></a>
-                                        <a href="{{ route('admin.question.edit', $listQuestion->id) }}"
-                                            class="btn btn-sm btn-warning btn-circle"><i class="fas fa-edit"></i></a>
-                                        @if ($listQuestion->status != 2)
-                                            <a onclick="deleteQuestion({{ $listQuestion->id }},'{{ $listQuestion->title }}')"
-                                                href="#" data-toggle="modal" data-target="#deleteQuestion"
-                                                class="btn btn-sm btn-danger btn-circle"><i class="fas fa-trash"></i></a>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
                     </table>
                 </div>
             </div>
@@ -110,4 +66,43 @@
 
     <!-- Page level custom scripts -->
     <script src="{{ asset('admin/js/demo/datatables-demo.js') }}"></script>
+
+    <script>
+        $(function() {
+            $('#question-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{!! route('admin.question.list') !!}',
+                columns: [{
+                        data: 'title',
+                        name: 'title'
+                    },
+                    {
+                        data: 'category',
+                        name: 'category'
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'view',
+                        name: 'view'
+                    },
+                    {
+                        data: 'updated_at',
+                        name: 'updated_at'
+                    }, 
+                    {
+                        data: 'status',
+                        name: 'status'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action'
+                    }
+                ]
+            });
+        });
+    </script>
 @endsection

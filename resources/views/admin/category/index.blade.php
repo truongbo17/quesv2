@@ -56,46 +56,6 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tfoot>
-                            <tr>
-                                <th>Name</th>
-                                <th>User</th>
-                                <th>Date</th>
-                                <th>Parent</th>
-                                <th>Total Question</th>
-                                <th style="width: 5px">Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                            @foreach ($listCategories as $listCategory)
-                                <tr>
-                                    <td>{{ $listCategory->name }}</td>
-                                    <td>{{ $listCategory->user->name }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($listCategory->created_at)->format('H:i d/m/Y') }}</td>
-                                    <td>{{ $listCategory->parent_id }}</td>
-                                    <td>{{ $listCategory->questions_count }}</td>
-                                    <td>
-                                        @if ($listCategory->status == 1)
-                                            <span class="badge bg-success text-white">Active</span>
-                                        @else
-                                            <span class="badge bg-danger text-white">Deleted</span>
-                                        @endif
-                                    </td>
-                                    <td style="width: 100px">
-                                        <a href="{{ route('admin.category.show', $listCategory->id) }}"
-                                            class="btn btn-sm btn-success btn-circle"><i class="fas fa-eye"></i></a>
-                                        <a href="{{ route('admin.category.edit', $listCategory->id) }}"
-                                            class="btn btn-sm btn-warning btn-circle"><i class="fas fa-edit"></i></a>
-                                        @if ($listCategory->status != 2)
-                                            <a onclick="deleteCategory({{ $listCategory->id }},'{{ $listCategory->name }}')"
-                                                href="#" data-toggle="modal" data-target="#deleteCategory"
-                                                class="btn btn-sm btn-danger btn-circle"><i class="fas fa-trash"></i></a>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
                     </table>
                 </div>
             </div>
@@ -114,4 +74,43 @@
 
     <!-- Page level custom scripts -->
     <script src="{{ asset('admin/js/demo/datatables-demo.js') }}"></script>
+
+    <script>
+        $(function() {
+            $('#question-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{!! route('admin.category.list') !!}',
+                columns: [{
+                        data: 'name',
+                        name: 'name'
+                    },
+                    // {
+                    //     data: 'user',
+                    //     name: 'user'
+                    // },
+                    // {
+                    //     data: 'updated_at',
+                    //     name: 'updated_at'
+                    // },
+                    // {
+                    //     data: 'parent',
+                    //     name: 'parent'
+                    // },
+                    // {
+                    //     data: 'total_question',
+                    //     name: 'total_question'
+                    // },
+                    // {
+                    //     data: 'status',
+                    //     name: 'status'
+                    // },
+                    // {
+                    //     data: 'action',
+                    //     name: 'action'
+                    // }
+                ]
+            });
+        });
+    </script>
 @endsection
