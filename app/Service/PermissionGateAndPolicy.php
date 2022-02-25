@@ -56,5 +56,19 @@ class PermissionGateAndPolicy
 
     public function Question()
     {
+        Gate::define('list_question', 'App\Policies\QuestionPolicy@viewAny');
+        Gate::define('show_question', 'App\Policies\QuestionPolicy@view');
+        Gate::define('add_question', 'App\Policies\QuestionPolicy@create');
+        Gate::define('edit_question', 'App\Policies\QuestionPolicy@update');
+        Gate::define('delete_question', 'App\Policies\QuestionPolicy@delete');
+    }
+
+    public function Tag()
+    {
+        Gate::define('list_tag', 'App\Policies\TagPolicy@viewAny');
+        Gate::define('show_tag', 'App\Policies\TagPolicy@view');
+        Gate::define('add_tag', 'App\Policies\TagPolicy@create');
+        Gate::define('edit_tag', 'App\Policies\TagPolicy@update');
+        Gate::define('delete_tag', 'App\Policies\TagPolicy@delete');
     }
 }

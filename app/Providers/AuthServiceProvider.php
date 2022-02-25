@@ -34,5 +34,7 @@ class AuthServiceProvider extends ServiceProvider
         $permission->User();
         $permission->Role();
         $permission->Permission();
+        $permission->Question();
+        $permission->Tag();
     }
 }
