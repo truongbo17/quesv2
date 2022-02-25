@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Permission;
 use Illuminate\Http\Request;
+use Yajra\Datatables\Datatables;
 
 class PermissionController extends Controller
 {
@@ -13,11 +14,41 @@ class PermissionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $listPermission = Permission::with('roles')->with('permissionParent')->get();
 
-        return view('admin.permission.index', compact('listPermission'));
+        if ($request->ajax()) {
+            return Datatables::of($listPermission)
+                ->addIndexColumn()
+                ->addColumn('roles', function ($permission) {
+                    $roleName = '';
+                    foreach ($permission->roles as $role) {
+                        $roleName .= $role->name . ',';
+                    }
+                    return $roleName;
+                })
+                ->addColumn('parent', function ($permission) {
+                    if (isset($permission->permissionParent->name)) {
+                        return $permission->permissionParent->name;
+                    }
+                })
+                ->editColumn('action', function ($permission) {
+                    $action = '<a href="' . route('admin.permission.edit', $permission->id) . '"
+                                                        class="btn btn-sm btn-warning btn-circle"><i class="fas fa-edit"></i></a>';
+                    if ($permission->status != 2) {
+                        $action .= "<a onclick='deletePermission($permission->id)'
+                                    href='#' data-toggle='modal' data-target='#deletePermission'
+                                    class='btn btn-sm btn-danger btn-circle'><i class='fas fa-trash'></i></a>";
+                    }
+
+                    return $action;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('admin.permission.index');
     }
 
     /**
@@ -103,9 +134,10 @@ class PermissionController extends Controller
     {
         $checkRole = Permission::whereId($request->id)
             ->withCount('roles')
+            ->withCount('permissionsChild')
             ->get();
 
-        if ($checkRole[0]->roles_count > 0) {
+        if ($checkRole[0]->roles_count > 0 || $checkRole[0]->permissions_child_count > 0) {
             return redirect(url()->previous() . '#error')->with('error', 'Please delete all role of this permission !');
         }
 

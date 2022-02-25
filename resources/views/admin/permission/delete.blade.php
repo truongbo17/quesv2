@@ -17,11 +17,11 @@
 </div>
 
 <script>
-    function deletePermission(permission_id, name) {
+    function deletePermission(permission_id) {
         $('.modal-body').text('');
         $('.modal-footer').text('');
 
-        $('.modal-body').text('Select "Confirm" below if you are ready to delete role - ' + name);
+        $('.modal-body').text('Select "Confirm" below if you are ready to delete permission');
         $('.modal-footer').append(
             `<a href="" class="btn btn-primary" onclick="submitDelete(${permission_id})">Confirm</a>`);
     }

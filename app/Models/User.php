@@ -42,6 +42,8 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'created_at'  => 'datetime:H:i d-m-Y',
+        'updated_at' => 'datetime:H:i d-m-Y',
     ];
 
     public function questions()

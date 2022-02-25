@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Role;
+use Yajra\Datatables\Datatables;
 
 class UserController extends Controller
 {
@@ -14,14 +15,54 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $listUsers = User::with('roles')
             ->withCount('questions')
             ->withCount('categories')
             ->orderBy('created_at', 'DESC')
             ->get();
-        return view('admin.user.index', compact('listUsers'));
+
+        if ($request->ajax()) {
+            return Datatables::of($listUsers)
+                ->addIndexColumn()
+                ->addColumn('roles', function ($user) {
+                    $roleName = '';
+                    foreach ($user->roles as $role) {
+                        $roleName .= $role->name . ',';
+                    }
+                    return $roleName;
+                })
+                ->addColumn('total_question', function ($user) {
+                    return $user->questions_count;
+                })
+                ->addColumn('total_category', function ($user) {
+                    return $user->categories_count;
+                })
+                ->addColumn('status', function ($user) {
+                    $status = '';
+                    if ($user->status == 1)
+                        $status = '<span class="badge bg-success text-white">Active</span>';
+                    else
+                        $status = '<span class="badge bg-danger text-white">Deleted</span>';
+                    return $status;
+                })
+                ->editColumn('action', function ($user) {
+                    $action = '<a href="' . route('admin.user.edit', $user->id) . '"
+                                                        class="btn btn-sm btn-warning btn-circle"><i class="fas fa-edit"></i></a>';
+                    if ($user->status != 2) {
+                        $action .= "<a onclick='deleteUser($user->id)'
+                                    href='#' data-toggle='modal' data-target='#deleteUser'
+                                    class='btn btn-sm btn-danger btn-circle'><i class='fas fa-trash'></i></a>";
+                    }
+
+                    return $action;
+                })
+                ->rawColumns(['action', 'status'])
+                ->make(true);
+        }
+
+        return view('admin.user.index');
     }
 
     /**

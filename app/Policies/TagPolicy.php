@@ -63,7 +63,7 @@ class TagPolicy
      * @param  \App\Models\Tag  $tag
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Tag $tag)
+    public function delete(User $user)
     {
         return $user->checkPermission('delete_tag');
     }

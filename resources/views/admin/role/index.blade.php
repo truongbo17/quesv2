@@ -35,7 +35,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="role-table" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -46,42 +46,6 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tfoot>
-                            <tr>
-                                <th>Name</th>
-                                <th>Display Name</th>
-                                <th>User</th>
-                                <th>Permission</th>
-                                <th>Date</th>
-                                <th>Action</th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                            @foreach ($listRole as $role)
-                                <tr>
-                                    <td>{{ $role->name }}</td>
-                                    <td>{{ $role->display_name }}</td>
-                                    <td>
-                                        @foreach ($role->users as $user)
-                                            {{ $user->name }} ,
-                                        @endforeach
-                                    </td>
-                                    <td>
-                                        @foreach ($role->permissions as $permission)
-                                            {{ $permission->name }} ,
-                                        @endforeach
-                                    </td>
-                                    <td>{{ \Carbon\Carbon::parse($role->created_at)->format('H:i d/m/Y') }}</td>
-                                    <td style="width: 100px">
-                                        <a href="{{ route('admin.role.edit', $role->id) }}"
-                                            class="btn btn-sm btn-warning btn-circle"><i class="fas fa-edit"></i></a>
-                                        <a onclick="deleteRole({{ $role->id }},'{{ $role->name }}')" href="#"
-                                            data-toggle="modal" data-target="#deleteRole"
-                                            class="btn btn-sm btn-danger btn-circle"><i class="fas fa-trash"></i></a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
                     </table>
                 </div>
             </div>
@@ -100,4 +64,39 @@
 
     <!-- Page level custom scripts -->
     <script src="{{ asset('admin/js/demo/datatables-demo.js') }}"></script>
+
+    <script>
+        $(function() {
+            $('#role-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{!! route('admin.role.list') !!}',
+                columns: [{
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'display_name',
+                        name: 'display_name'
+                    },
+                    {
+                        data: 'username',
+                        name: 'username'
+                    },
+                    {
+                        data: 'permissions',
+                        name: 'permissions'
+                    },
+                    {
+                        data: 'updated_at',
+                        name: 'updated_at'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action'
+                    }
+                ]
+            });
+        });
+    </script>
 @endsection

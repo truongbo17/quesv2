@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Yajra\Datatables\Datatables;
 
 class TagController extends Controller
 {
@@ -13,13 +14,45 @@ class TagController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $listTags = Tag::withCount('questions')
             ->orderBy('created_at', 'DESC')
             ->get();
 
-        return view('admin.tag.index', compact('listTags'));
+        if ($request->ajax()) {
+            return Datatables::of($listTags)
+                ->addIndexColumn()
+                ->addColumn('total_question', function ($tag) {
+                    return $tag->questions_count;
+                })
+                ->addColumn('status', function ($tag) {
+                    $status = '';
+                    if ($tag->status == 1)
+                        $status = '<span class="badge bg-success text-white">Active</span>';
+                    elseif ($tag->status == 0)
+                        $status = '<span class="badge bg-warning text-white">Pending</span>';
+                    else
+                        $status = '<span class="badge bg-danger text-white">Deleted</span>';
+
+                    return $status;
+                })
+                ->editColumn('action', function ($tag) {
+                    $action = '<a href="' . route('admin.tag.edit', $tag->id) . '"
+                                                    class="btn btn-sm btn-warning btn-circle"><i class="fas fa-edit"></i></a>';
+                    if ($tag->status != 2) {
+                        $action .= "<a onclick='deleteTag($tag->id)'
+                                href='#' data-toggle='modal' data-target='#deleteTag'
+                                class='btn btn-sm btn-danger btn-circle'><i class='fas fa-trash'></i></a>";
+                    }
+
+                    return $action;
+                })
+                ->rawColumns(['action', 'status'])
+                ->make(true);
+        }
+
+        return view('admin.tag.index');
     }
 
     /**
@@ -103,7 +136,6 @@ class TagController extends Controller
      */
     public function destroy(Request $request)
     {
-
         $checkQuestionOfTag = Tag::whereId($request->id)->withCount('questions')->get();
         if ($checkQuestionOfTag[0]->questions_count > 0) {
             return redirect(url()->previous() . '#error')->with('error', 'Please delete all question of this tag !');

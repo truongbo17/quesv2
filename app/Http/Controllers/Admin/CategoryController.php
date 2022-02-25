@@ -28,12 +28,13 @@ class CategoryController extends Controller
                 ->addColumn('user', function ($category) {
                     return $category->user->name;
                 })
+                ->addColumn('total_question', function ($category) {
+                    return $category->questions_count;
+                })
                 ->addColumn('status', function ($category) {
                     $status = '';
                     if ($category->status == 1)
                         $status = '<span class="badge bg-success text-white">Active</span>';
-                    elseif ($category->status == 0)
-                        $status = '<span class="badge bg-warning text-white">Pending</span>';
                     else
                         $status = '<span class="badge bg-danger text-white">Deleted</span>';
 

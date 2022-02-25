@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
-use Laravel\Ui\Presets\React;
+use Yajra\Datatables\Datatables;
 
 class RoleController extends Controller
 {
@@ -15,10 +15,43 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $listRole = Role::with('users')->with('permissions')->get();
-        return view('admin.role.index', compact('listRole'));
+
+        if ($request->ajax()) {
+            return Datatables::of($listRole)
+                ->addIndexColumn()
+                ->addColumn('username', function ($role) {
+                    $userName = '';
+                    foreach ($role->users as $user) {
+                        $userName .= $user->name . ',';
+                    }
+                    return $userName;
+                })
+                ->addColumn('permissions', function ($role) {
+                    $permissionName = '';
+                    foreach ($role->permissions as $permission) {
+                        $permissionName .= $permission->name . ',';
+                    }
+                    return $permissionName;
+                })
+                ->editColumn('action', function ($role) {
+                    $action = '<a href="' . route('admin.role.edit', $role->id) . '"
+                                                class="btn btn-sm btn-warning btn-circle"><i class="fas fa-edit"></i></a>';
+                    if ($role->status != 2) {
+                        $action .= "<a onclick='deleteRole($role->id)'
+                            href='#' data-toggle='modal' data-target='#deleteRole'
+                            class='btn btn-sm btn-danger btn-circle'><i class='fas fa-trash'></i></a>";
+                    }
+
+                    return $action;
+                })
+                ->rawColumns(['action', 'status'])
+                ->make(true);
+        }
+
+        return view('admin.role.index');
     }
 
     /**

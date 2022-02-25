@@ -43,7 +43,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="tag-table" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -54,42 +54,6 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tfoot>
-                            <tr>
-                                <th>Name</th>
-                                <th>Total Question</th>
-                                <th>Slug</th>
-                                <th>Date</th>
-                                <th style="width: 5px">Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                            @foreach ($listTags as $listTag)
-                                <tr>
-                                    <td>{{ $listTag->name }}</td>
-                                    <td>{{ $listTag->questions_count }}</td>
-                                    <td>{{ $listTag->slug }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($listTag->created_at)->format('H:i d/m/Y') }}</td>
-                                    <td>
-                                        @if ($listTag->status == 1)
-                                            <span class="badge bg-success text-white">Active</span>
-                                        @else
-                                            <span class="badge bg-danger text-white">Deleted</span>
-                                        @endif
-                                    </td>
-                                    <td style="width: 100px">
-                                        <a href="{{ route('admin.tag.edit', $listTag->id) }}"
-                                            class="btn btn-sm btn-warning btn-circle"><i class="fas fa-edit"></i></a>
-                                        @if ($listTag->status != 2)
-                                            <a onclick="deleteTag({{ $listTag->id }},'{{ $listTag->name }}')" href="#"
-                                                data-toggle="modal" data-target="#deleteTag"
-                                                class="btn btn-sm btn-danger btn-circle"><i class="fas fa-trash"></i></a>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
                     </table>
                 </div>
             </div>
@@ -108,4 +72,39 @@
 
     <!-- Page level custom scripts -->
     <script src="{{ asset('admin/js/demo/datatables-demo.js') }}"></script>
+
+    <script>
+        $(function() {
+            $('#tag-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{!! route('admin.tag.list') !!}',
+                columns: [{
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'total_question',
+                        name: 'total_question'
+                    },
+                    {
+                        data: 'slug',
+                        name: 'slug'
+                    },
+                    {
+                        data: 'updated_at',
+                        name: 'updated_at'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action'
+                    }
+                ]
+            });
+        });
+    </script>
 @endsection

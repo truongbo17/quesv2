@@ -36,7 +36,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="permission-table" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -48,48 +48,6 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tfoot>
-                            <tr>
-                                <th>Name</th>
-                                <th>Display Name</th>
-                                <th>Key Code</th>
-                                <th>Parent</th>
-                                <th>Role</th>
-                                <th>Date</th>
-                                <th>Action</th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                            @foreach ($listPermission as $permission)
-                                <tr>
-                                    <td>{{ $permission->name }}</td>
-                                    <td>{{ $permission->display_name }}</td>
-                                    <td>{{ $permission->key_code }}</td>
-                                    <td>
-                                        @if (isset($permission->permissionParent->name))
-                                            {{ $permission->permissionParent->name }}
-                                        @else
-                                            Don't Parent
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @foreach ($permission->roles as $role)
-                                            {{ $role->name }} ,
-                                        @endforeach
-                                    </td>
-                                    <td>{{ \Carbon\Carbon::parse($permission->created_at)->format('H:i d/m/Y') }}</td>
-                                    <td style="width: 100px">
-                                        <a href="{{ route('admin.permission.edit', $permission->id) }}"
-                                            class="btn btn-sm btn-warning btn-circle"><i class="fas fa-edit"></i></a>
-                                        @if ($permission->parent_id != 0)
-                                            <a onclick="deletePermission({{ $permission->id }},'{{ $permission->name }}')"
-                                                href="#" data-toggle="modal" data-target="#deletePermission"
-                                                class="btn btn-sm btn-danger btn-circle"><i class="fas fa-trash"></i></a>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
                     </table>
                 </div>
             </div>
@@ -108,4 +66,43 @@
 
     <!-- Page level custom scripts -->
     <script src="{{ asset('admin/js/demo/datatables-demo.js') }}"></script>
+
+    <script>
+        $(function() {
+            $('#permission-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{!! route('admin.permission.list') !!}',
+                columns: [{
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'display_name',
+                        name: 'display_name'
+                    },
+                    {
+                        data: 'key_code',
+                        name: 'key_code'
+                    },
+                    {
+                        data: 'parent',
+                        name: 'parent'
+                    },
+                    {
+                        data: 'roles',
+                        name: 'roles'
+                    },
+                    {
+                        data: 'updated_at',
+                        name: 'updated_at'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action'
+                    }
+                ]
+            });
+        });
+    </script>
 @endsection

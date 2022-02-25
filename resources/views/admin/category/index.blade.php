@@ -44,7 +44,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="role-table" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -77,7 +77,7 @@
 
     <script>
         $(function() {
-            $('#question-table').DataTable({
+            $('#role-table').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: '{!! route('admin.category.list') !!}',
@@ -85,30 +85,30 @@
                         data: 'name',
                         name: 'name'
                     },
-                    // {
-                    //     data: 'user',
-                    //     name: 'user'
-                    // },
-                    // {
-                    //     data: 'updated_at',
-                    //     name: 'updated_at'
-                    // },
-                    // {
-                    //     data: 'parent',
-                    //     name: 'parent'
-                    // },
-                    // {
-                    //     data: 'total_question',
-                    //     name: 'total_question'
-                    // },
-                    // {
-                    //     data: 'status',
-                    //     name: 'status'
-                    // },
-                    // {
-                    //     data: 'action',
-                    //     name: 'action'
-                    // }
+                    {
+                        data: 'user',
+                        name: 'user'
+                    },
+                    {
+                        data: 'updated_at',
+                        name: 'updated_at'
+                    },
+                    {
+                        data: 'parent_id',
+                        name: 'parent_id'
+                    },
+                    {
+                        data: 'total_question',
+                        name: 'total_question'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action'
+                    }
                 ]
             });
         });

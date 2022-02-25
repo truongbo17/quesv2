@@ -21,7 +21,7 @@
         $('.modal-body').text('');
         $('.modal-footer').text('');
 
-        $('.modal-body').text('Select "Confirm" below if you are ready to delete user - ' + name);
+        $('.modal-body').text('Select "Confirm" below if you are ready to delete user ');
         $('.modal-footer').append(
             `<a href="" class="btn btn-primary" onclick="submitDelete(${user_id})">Confirm</a>`);
     }

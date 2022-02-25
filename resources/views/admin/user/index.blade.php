@@ -35,7 +35,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="user-table" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -48,50 +48,6 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tfoot>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Roles</th>
-                                <th>Total Question</th>
-                                <th>Total Category</th>
-                                <th>Date</th>
-                                <th style="width: 5px;">Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                            @foreach ($listUsers as $user)
-                                <tr>
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $user->email }}</td>
-                                    <td>
-                                        @foreach ($user->roles as $role)
-                                            {{ $role->name }} ,
-                                        @endforeach
-                                    </td>
-                                    <td>{{ $user->questions_count }}</td>
-                                    <td>{{ $user->categories_count }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($user->created_at)->format('H:i d/m/Y') }}</td>
-                                    <td>
-                                        @if ($user->status == 1)
-                                            <span class="badge bg-success text-white">Active</span>
-                                        @else
-                                            <span class="badge bg-danger text-white">Deleted</span>
-                                        @endif
-                                    </td>
-                                    <td style="width: 100px">
-                                        <a href="{{ route('admin.user.edit', $user->id) }}"
-                                            class="btn btn-sm btn-warning btn-circle"><i class="fas fa-edit"></i></a>
-                                        @if ($user->status != 2)
-                                            <a onclick="deleteUser({{ $user->id }},'{{ $user->name }}')" href="#"
-                                                data-toggle="modal" data-target="#deleteUser   "
-                                                class="btn btn-sm btn-danger btn-circle"><i class="fas fa-trash"></i></a>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
                     </table>
                 </div>
             </div>
@@ -110,4 +66,47 @@
 
     <!-- Page level custom scripts -->
     <script src="{{ asset('admin/js/demo/datatables-demo.js') }}"></script>
+
+    <script>
+        $(function() {
+            $('#user-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{!! route('admin.user.list') !!}',
+                columns: [{
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'email',
+                        name: 'email'
+                    },
+                    {
+                        data: 'roles',
+                        name: 'roles'
+                    },
+                    {
+                        data: 'total_question',
+                        name: 'total_question'
+                    },
+                    {
+                        data: 'total_category',
+                        name: 'total_category'
+                    },
+                    {
+                        data: 'updated_at',
+                        name: 'updated_at'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action'
+                    }
+                ]
+            });
+        });
+    </script>
 @endsection

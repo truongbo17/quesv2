@@ -17,11 +17,11 @@
 </div>
 
 <script>
-    function deleteRole(role_id, name) {
+    function deleteRole(role_id) {
         $('.modal-body').text('');
         $('.modal-footer').text('');
 
-        $('.modal-body').text('Select "Confirm" below if you are ready to delete role - ' + name);
+        $('.modal-body').text('Select "Confirm" below if you are ready to delete');
         $('.modal-footer').append(
             `<a href="" class="btn btn-primary" onclick="submitDelete(${role_id})">Confirm</a>`);
     }
