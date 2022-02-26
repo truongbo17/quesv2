@@ -12,6 +12,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Yajra\Datatables\Datatables;
+
 class QuestionController extends Controller
 {
     private $disk = 'public';
@@ -94,8 +95,16 @@ class QuestionController extends Controller
                 $request->slug = \Str::slug($request->title);
             }
 
-            $pathImage = $request->file('imageQuestion')->store('public/files/1/imagesquestion');
-            $pathImage = str_replace('public/', '', $pathImage);
+            // $pathImage = $request->file('imageQuestion')->store('public/files/1/imagesquestion');
+            // $pathImage = str_replace('public/', '', $pathImage);
+
+            $fileName = date('mdYHis') . uniqid() . "." . $request->file('imageQuestion')->getClientOriginalExtension();
+            $pathImage = $request->file('imageQuestion')->storeAs('files/1/imagesquestion', $fileName, ['disk' => $this->disk]);
+
+            $picture = json_encode([
+                "disk" => $this->disk,
+                "path" => $pathImage
+            ]);
 
             $question = Question::create([
                 'user_id' => $request->user_id,
@@ -103,7 +112,8 @@ class QuestionController extends Controller
                 'title' => $request->title,
                 'view' => 1,
                 'status' => $request->status,
-                'image' => $pathImage,
+                // 'image' => $pathImage,
+                'picture' => $picture,
                 'slug' => $request->slug,
                 'content' => $request->content,
             ]);
@@ -184,25 +194,20 @@ class QuestionController extends Controller
                 $fileName = date('mdYHis') . uniqid() . "." . $request->file('imageQuestion')->getClientOriginalExtension();
                 $pathImage = $request->file('imageQuestion')->storeAs('files/1/imagesquestion', $fileName, ['disk' => $this->disk]);
 
-                /*
-                preview store in datababse
-                {
-                    "disk" : "public",
-                    "path" : "files/1/imagesquestion/022520221646176218a569bf0bf.jpg"
-                }
-                */
-                dd($pathImage);
-
-                $question->image = $pathImage;
-            }
-            Question::whereId($request->id)
-                ->update([
-                    'title' => $request->title,
-                    'category_id' => $request->category_id,
-                    'status' => $request->status,
-                    'slug' => $request->slug,
-                    'content' => $request->content,
+                $picture = json_encode([
+                    "disk" => $this->disk,
+                    "path" => $pathImage
                 ]);
+
+                $question->picture = $picture;
+            }
+            $question->update([
+                'title' => $request->title,
+                'category_id' => $request->category_id,
+                'status' => $request->status,
+                'slug' => $request->slug,
+                'content' => $request->content,
+            ]);
 
             $question->tags()->sync($request->tag_id);
 

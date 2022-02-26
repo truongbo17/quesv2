@@ -63,7 +63,7 @@ class IndexController extends Controller
                         <p style="color:blue">
                             ' . $tags . '
                         </p>
-                        <img style="width:100%" class="post_image" src="storage/' . $question->image . '" />
+                        <img style="width:100%" class="post_image" src="storage/' . json_decode($question->picture)->path . '" />
                         <div class="btm_icon">
                             <div class="left_icon">';
 

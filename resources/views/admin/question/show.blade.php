@@ -68,7 +68,8 @@
                     <!-- Card Body -->
                     <div class="card-body">
                         <div class="chart-pie pt-4 pb-2">
-                            <img src="{{ asset('storage/' . $question[0]->image) }}" style="width:100%;height:auto;">
+                            <img src="{{ asset('storage/' . json_decode($question[0]->picture)->path) }}"
+                                style="width:100%;height:auto;">
                         </div>
                     </div>
                 </div>

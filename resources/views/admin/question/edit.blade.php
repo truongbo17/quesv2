@@ -130,7 +130,7 @@
                         <!-- Card Body -->
                         <div class="card-body">
                             <div class="chart-pie pt-4 pb-2">
-                                <img id="output" src="{{ asset('storage/' . $question[0]->image) }}"
+                                <img id="output" src="{{ asset('storage/' . json_decode($question[0]->picture)->path) }}"
                                     style="width:100%;height:auto;">
                             </div>
                         </div>
