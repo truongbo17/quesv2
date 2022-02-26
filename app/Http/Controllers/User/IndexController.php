@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Auth;
 
 class IndexController extends Controller
 {
+    private $disk = 'public';
+
     public function index(Request $request)
     {
         $listcategory = Category::where('status', 1)->get();
@@ -117,8 +119,16 @@ class IndexController extends Controller
     public function store(AddQuestion $request)
     {
         try {
-            $pathImage = $request->file('imageQuestion')->store('public/files/1/imagesquestion');
-            $pathImage = str_replace('public/', '', $pathImage);
+            // $pathImage = $request->file('imageQuestion')->store('public/files/1/imagesquestion');
+            // $pathImage = str_replace('public/', '', $pathImage);
+
+            $fileName = date('mdYHis') . uniqid() . "." . $request->file('imageQuestion')->getClientOriginalExtension();
+            $pathImage = $request->file('imageQuestion')->storeAs('files/1/imagesquestion', $fileName, ['disk' => $this->disk]);
+
+            $picture = json_encode([
+                "disk" => $this->disk,
+                "path" => $pathImage
+            ]);
 
             $slug = \Str::slug($request->title);
 
@@ -129,14 +139,15 @@ class IndexController extends Controller
                 'content' => $request->title,
                 'view' => 1,
                 'status' => 0,
-                'image' => $pathImage,
+                'picture' => $picture,
                 'slug' => $slug,
             ]);
 
-
-            foreach ($request->tag_id as $tagId) {
-                $tag = Tag::find($tagId);
-                $tag->questions()->attach($question->id);
+            if ($request->has('tag_id')) {
+                foreach ($request->tag_id as $tagId) {
+                    $tag = Tag::find($tagId);
+                    $tag->questions()->attach($question->id);
+                }
             }
 
             return redirect(url()->previous() . '#success')->with('success', 'Add new question success , Please wait for approval !');
